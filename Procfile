@@ -1,1 +1,2 @@
-worker: python ankitttg.py
+worker: python main.py
+
