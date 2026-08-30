@@ -1,5 +1,2 @@
 python-telegram-bot
-aiohttp
-pyrogram
-tgcrypto
-httpx
+
