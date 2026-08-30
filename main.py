@@ -3,26 +3,28 @@ import subprocess
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, MessageHandler, CommandHandler, CallbackQueryHandler, ContextTypes, filters
 
-# Aapka Bot Token
+# 🌸 Bot Configuration & Security Credentials
 TELEGRAM_BOT_TOKEN = "8926218603:AAH9YcmIRJ6hwLuvGYC-a0bQoZIKw46aC94"
 SECRET_PASSWORD = "ANKIT MERA BAAP HA"
 
 authenticated_users = set()
 running_bots = {}
 
+# ⛩️ Main Matrix Dashboard / Start Menu
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
-        [InlineKeyboardButton("⛩️ Login to System", callback_data="ask_login")],
-        [InlineKeyboardButton("📜 View Active Hosts", callback_data="list_hosts")],
-        [InlineKeyboardButton("🌸 Help / Guide", callback_data="help_menu")]
+        [InlineKeyboardButton("💎 𝙆𝙀𝙔 𝘼𝙐𝙏𝙃𝙀𝙉𝙏𝙄𝘾𝘼𝙏𝙄𝙊𝙉 💎", callback_data="ask_login")],
+        [InlineKeyboardButton("📜 𝘼𝘾𝙏𝙄𝙑𝙀 𝙃𝙊𝙎𝙏𝙎 𝙈𝘼𝙏𝙍𝙄𝙓", callback_data="list_hosts")],
+        [InlineKeyboardButton("⛩️ 𝘾𝙔𝘽𝙀𝙍 𝙂𝙐𝙄𝘿𝙀 / 𝙃𝙀𝙇𝙋", callback_data="help_menu")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     text = (
-        "✨ **[ SYSTEM ONLINE ]** ✨\n"
-        "Kon'nichiwa, Master Ankit! 🌸\n\n"
-        "Welcome to the **Neo-Tokyo Python Hosting Matrix**. "
-        "Type karne ki koi zaroorat nahi hai—neeche diye gaye buttons ka upyog karein! 👇"
+        "✨ ── **[ 𝓝𝓔𝓞 - 𝓣𝓞𝓚𝓨𝓞  𝓗𝓞𝓢𝓣𝓘𝓝𝓖 ]** ── ✨\n\n"
+        "🌸 **Kon'nichiwa, Master Ankit!** 🌸\n\n"
+        "⚡ *Welcome to the Elite Python Cloud Matrix.*\n"
+        "🔒 *Status:* `Secure & Protected`\n\n"
+        "👇 *Neeche diye gaye interactive buttons ka upyog karein:*"
     )
     
     if update.callback_query:
@@ -30,6 +32,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await update.message.reply_text(text, reply_markup=reply_markup, parse_mode="Markdown")
 
+# 🎛️ Interactive Callback Controller
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -37,38 +40,41 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if query.data == "ask_login":
         await query.message.edit_text(
-            "🔑 **Authentication Required**\n\n"
-            "System unlock karne ke liye niche button dabayein:",
-            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔓 Auto-Unlock System", callback_data="auto_login")],
-                                               [InlineKeyboardButton("🔙 Back", callback_data="main_menu")]]),
+            "🔑 **[ 𝓢𝓔𝓒𝓤𝓡𝓘𝓣𝓨  𝓖𝓐𝓣𝓔𝓦𝓐𝓨 ]** 🔑\n\n"
+            "⚠️ *Access Restricted!* Auto-unlocking disabled.\n\n"
+            "💬 *Kripya chat mein password enter karne ke liye yeh command use karein:*\n"
+            "`/login <Aapka_Password>`\n\n"
+            "✨ *Example:* `/login ANKIT MERA BAAP HA`",
+            reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 𝑹𝑬𝑻𝑼𝑹𝑵 𝑻𝑶 𝑴𝑨𝑰𝑵", callback_data="main_menu")]]),
             parse_mode="Markdown"
         )
 
-    elif query.data == "auto_login":
-        authenticated_users.add(user_id)
-        await show_dashboard(query)
-
     elif query.data == "list_hosts":
         if user_id not in authenticated_users:
-            await query.message.edit_text("🔒 Pehle system unlock karein!", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 Back", callback_data="main_menu")]]))
+            await query.message.edit_text(
+                "❌ **[ 𝓐CCESS  DENIED ]** ❌\n\n"
+                "🔒 Pehle password dalkar system unlock karein!",
+                reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("🔙 𝑩𝑨𝑪𝑲 𝑻𝑶 𝑴𝑬𝑵𝑼", callback_data="main_menu")]]),
+                parse_mode="Markdown"
+            )
             return
         
         if not running_bots:
-            active_text = "📭 Filhaal koi bhi `.py` script live nahi hai."
+            active_text = "📭 **[ 𝓩𝓔𝓡𝓞  𝓗𝓞𝓢𝓣𝓢 ]**\n\nFilhaal koi bhi `.py` script live matrix par active nahi hai. 🍃"
         else:
-            active_text = "⚡ **Active Scripts Matrix:**\n" + "\n".join([f"• `{name}`" for name in running_bots.keys()])
+            active_text = "⚡ **[ 𝓐𝘾𝓣𝙄𝙑𝙀  𝙎𝘾𝑹𝙄𝙷𝓣𝓢 ]** ⚡\n\n" + "\n".join([f"✨ `• {name}` ── `[ONLINE 🚀]`" for name in running_bots.keys()])
         
-        keyboard = [[InlineKeyboardButton("🔙 Back to Dashboard", callback_data="dashboard")]]
+        keyboard = [[InlineKeyboardButton("🖥️ 𝑩𝑨𝑪𝑲 𝑻𝑶 𝑫𝑨𝑺𝑯𝑩𝑶𝑨𝑹𝑫", callback_data="dashboard")]]
         await query.message.edit_text(active_text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
     elif query.data == "help_menu":
         help_text = (
-            "🌸 **Neo-Tokyo Host Guide** 🌸\n\n"
-            "1. **Unlock:** Button click karke access lein.\n"
-            "2. **Upload:** Koi bhi `.py` file chat mein bhej dein.\n"
-            "3. **Run:** Bot automatic background mein execute kar dega!"
+            "🌸 **[ 𝓝𝓔𝓞 - 𝓣𝓞𝓚𝓨𝓞  𝓖𝓤𝓘𝓓𝓔 ]** 🌸\n\n"
+            "1. **Unlock:** `/login <password>` command bhej kar system unlock karein.\n"
+            "2. **Upload:** Unlocked dashboard ke baad apni koi bhi `.py` script chat mein bhejein.\n"
+            "3. **Execution:** Bot automatic background matrix mein script run kar dega! 🚀"
         )
-        keyboard = [[InlineKeyboardButton("🔙 Back", callback_data="main_menu")]]
+        keyboard = [[InlineKeyboardButton("🔙 𝑩𝑨𝑪𝑲 𝑻𝑶 𝑴𝑬𝑵𝑼", callback_data="main_menu")]]
         await query.message.edit_text(help_text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
 
     elif query.data in ["main_menu", "dashboard"]:
@@ -77,43 +83,61 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await start(update, context)
 
+# 🌟 Unlocked Cyber Dashboard UI
 async def show_dashboard(query):
     keyboard = [
-        [InlineKeyboardButton("📁 Upload .py Script", callback_data="info_upload")],
-        [InlineKeyboardButton("⚡ Check Running Scripts", callback_data="list_hosts")],
-        [InlineKeyboardButton("⛩️ Logout / Lock", callback_data="logout")]
+        [InlineKeyboardButton("📁 𝓤𝓟𝓛𝓞𝓐𝓓 .𝓅𝓎 𝓢𝓒𝓡𝓘𝓟𝓣", callback_data="list_hosts")],
+        [InlineKeyboardButton("⚡ 𝓥𝓘𝓔𝓝 𝓡𝓤𝓝𝓝𝓘𝓝𝓖 𝓗𝓞𝓢𝓣𝓢", callback_data="list_hosts")],
+        [InlineKeyboardButton("⛩️ 𝓛𝓞𝓖𝓞𝓤𝓣 / 𝓛𝓞𝓒𝓚", callback_data="logout")]
     ]
     await query.message.edit_text(
-        "🌟 **[ DASHBOARD UNLOCKED ]** 🌟\n"
-        "Aapka system fully operational hai. Ab apni `.py` file direct yahan bhej sakte hain! 🚀",
+        "🌟 **[ 𝓓𝓐𝓢𝓗𝓑𝓞𝓐𝓡𝓓  𝓤𝓝𝓛𝓞𝓒𝓚𝓔𝓓 ]** 🌟\n\n"
+        "🌸 *Access Granted, Master Ankit!* \n"
+        "⚡ Aapka cloud environment fully operational hai. Ab apni koi bhi `.py` script direct is chat mein upload karein! 🚀",
         reply_markup=InlineKeyboardMarkup(keyboard),
         parse_mode="Markdown"
     )
 
+# 🔐 Strict Password Authentication Handler
 async def login(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     entered_password = " ".join(context.args) if context.args else ""
 
     if entered_password == SECRET_PASSWORD:
         authenticated_users.add(user_id)
-        keyboard = [[InlineKeyboardButton("🌟 Open Dashboard", callback_data="dashboard")]]
-        await update.message.reply_text("⛩️ **Omedetou!** Password sahi hai. System unlocked.", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
+        keyboard = [[InlineKeyboardButton("🌟 𝑶𝑷𝑬𝑵 𝑪𝒀𝑩𝑬𝑹 𝑫𝑨𝑺𝑯𝑩𝑶𝑨𝑹𝑫", callback_data="dashboard")]]
+        await update.message.reply_text(
+            "⛩️ **[ 𝓐𝓤𝓣𝓗𝓔𝓝𝓣𝓘CATION  𝓢𝓤𝓒𝓒𝓔𝓢𝓢𝓕𝓤𝓛 ]** ⛩️\n\n"
+            "🌸 *Omedetou!* Password ekdum sahi hai. Matrix unlocked! ✨",
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            parse_mode="Markdown"
+        )
     else:
-        await update.message.reply_text("❌ Sugoi... Galat password hai!")
+        await update.message.reply_text(
+            "❌ **[ 𝓐𝘾𝘾𝓔𝓢𝓢  𝓡𝓔𝓥𝓞𝓚𝓔𝓓 ]** ❌\n\n"
+            "⚠️ Sugoi... Galat password hai! Sahi password ke sath dubara koshish karein.",
+            parse_mode="Markdown"
+        )
 
+# 📂 Python Script Compiler & Background Executor
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
 
     if user_id not in authenticated_users:
-        keyboard = [[InlineKeyboardButton("🔓 Unlock System Now", callback_data="ask_login")]]
-        await update.message.reply_text("🔒 **Access Denied!** Pehle system unlock karna hoga.", reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
+        keyboard = [[InlineKeyboardButton("🔑 𝑼𝑵𝑳𝑶𝑪𝑲 𝑺𝒀𝑺𝑻𝑬𝑴", callback_data="ask_login")]]
+        await update.message.reply_text(
+            "🔒 **[ 𝓢𝓔𝓒𝓤𝓡𝓘𝓣𝓨  𝓑𝓡𝓔𝓐𝓚 ]** 🔒\n\n"
+            "⚠️ Pehle password dalkar system unlock karein tabhi script deploy hogi!",
+            reply_markup=InlineKeyboardMarkup(keyboard),
+            parse_mode="Markdown"
+        )
         return
 
     file = await update.message.document.get_file()
     file_name = update.message.document.file_name
 
     if not file_name.endswith('.py'):
-        await update.message.reply_text("⚠️ Kripya sirf valid `.py` file hi bhejein!")
+        await update.message.reply_text("⚠️ **[ 𝓔𝓡𝓡𝓞𝓡 ]** Kripya sirf valid `.py` script hi upload karein!")
         return
 
     file_path = os.path.join(".", file_name)
@@ -126,17 +150,18 @@ async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
         process = subprocess.Popen(["python", file_path])
         running_bots[file_name] = process
 
-        keyboard = [[InlineKeyboardButton("⚡ View Running Status", callback_data="list_hosts")]]
+        keyboard = [[InlineKeyboardButton("⚡ 𝑽𝑰𝑬𝑾 𝑳𝑰𝑽𝑬 𝑺𝑻𝑨𝑻𝑼𝑺", callback_data="list_hosts")]]
         await update.message.reply_text(
-            f"🌸 **File Deployed Successfully!**\n"
-            f"• File: `{file_name}`\n"
-            f"• Status: `Running in background 🚀`",
+            f"🌸 **[ 𝓢𝓒𝓡𝓘𝓟𝓣  𝘿𝓔𝓟𝓛𝓞𝙔𝓔𝓓 ]** 🌸\n\n"
+            f"• **File:** `{file_name}`\n"
+            f"• **Status:** `Running in Background Matrix 🚀`",
             reply_markup=InlineKeyboardMarkup(keyboard),
             parse_mode="Markdown"
         )
     except Exception as e:
-        await update.message.reply_text(f"⚠️ Error: {str(e)}")
+        await update.message.reply_text(f"⚠️ **[ 𝓔𝓡𝓡𝓞𝓡 ]** `{str(e)}`")
 
+# 🔓 Logout & Lock Session
 async def logout(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -144,6 +169,7 @@ async def logout(update: Update, context: ContextTypes.DEFAULT_TYPE):
         authenticated_users.remove(query.from_user.id)
     await start(update, context)
 
+# 🚀 Core Application Initialization with Conflict Protection
 app = ApplicationBuilder().token(TELEGRAM_BOT_TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
@@ -151,6 +177,5 @@ app.add_handler(CommandHandler("login", login))
 app.add_handler(CallbackQueryHandler(button_handler))
 app.add_handler(MessageHandler(filters.Document.ALL, handle_document))
 
-print("Password-Protected Hosting Bot Started...")
-app.run_polling()
-      
+print("Neo-Tokyo Secure Hosting Matrix Started Successfully...")
+app.run_polling(drop_pending_updates=True)
